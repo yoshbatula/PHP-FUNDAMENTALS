@@ -32,46 +32,55 @@
     <h1>Recommended Manga Books</h1>
 
     <p>Here are some manga books that I recommend:</p>
-        
+
     <?php
         $books = [
             [
                 'title' => 'One Piece',
                 'author' => 'Eiichiro Oda',
-                'genre' => 'Adventure, Fantasy'
+                'genre' => 'Adventure, Fantasy',
+                'releaseYear' => 1997
             ],
             [
                 'title' => 'Naruto',
                 'author' => 'Masashi Kishimoto',
-                'genre' => 'Adventure, Fantasy'
+                'genre' => 'Adventure, Fantasy',
+                'releaseYear' => 1999
             ],
             [
                 'title' => 'Attack on Titan',
                 'author' => 'Hajime Isayama',
-                'genre' => 'Action, Dark Fantasy'
+                'genre' => 'Action, Dark Fantasy',
+                'releaseYear' => 2009
             ],
         ];
 
-        function filterByAuthor($books) {
+        function filter($items, $fn) {
            $filteredbooks = [];
 
-           foreach ($books as $book) {
-                if ($book['author'] === 'Eiichiro Oda') {
-                    $filteredbooks[] = $book;
-                } elseif ($book['author'] === 'Masashi Kishimoto') {
-                    $filteredbooks[] = $book;
-                }
+           foreach ($items as $item) {
+                if ($fn($item)) {
+                    $filteredbooks[] = $item;
+                } 
            }
 
            return $filteredbooks;
-        }
+        };
+        
+        $filteredbooks = filter($books, function($book) {
+            if ($book['releaseYear'] >= 1999) {
+                return true;
+            }
+            return false;
+        })
+        
     ?>
 
     <ul>
-        <?php foreach (filterByAuthor($books) as $book) : ?>
+        <?php foreach ($filteredbooks as $book) : ?>
             <li>
                 <a href="<?php $book['author'] ?>">
-                    <?= $book['title']; ?> by <?= $book['author']; ?> (<?= $book['genre']; ?>)
+                    <?= $book['title']; ?> by <?= $book['author']; ?> <?= $book['genre']; ?> (<?= $book['releaseYear']; ?>)
                 </a>
             </li>
 
